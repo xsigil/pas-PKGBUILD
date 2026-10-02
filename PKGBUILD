@@ -1,5 +1,5 @@
 pkgname=pas-git
-pkgver=1.0.0.r4.gf27e10f
+pkgver=2.0.0.r1.gbc9fae7
 pkgrel=1
 pkgdesc="Zero-metadata, anti-forensic secret store for Wayland & Linux (VCS master/main)"
 arch=('x86_64' 'aarch64')
@@ -7,9 +7,6 @@ url="https://github.com/xsigil/pas"
 license=('MIT')
 depends=('gnupg' 'fzf' 'wl-clipboard')
 makedepends=('go' 'git')
-optdepends=(
-  'gawk: for scripts/migrate-legacy.sh legacy store migration'
-)
 provides=('pas')
 conflicts=('pas')
 source=("pas::git+$url.git")
@@ -38,7 +35,6 @@ build() {
 package() {
   cd "$srcdir/pas"
   install -Dm755 build/pas "$pkgdir/usr/bin/pas"
-  install -Dm755 scripts/migrate-legacy.sh "$pkgdir/usr/share/pas/scripts/migrate-legacy.sh"
   install -Dm644 README.md "$pkgdir/usr/share/doc/pas/README.md"
   install -Dm644 SPEC.md "$pkgdir/usr/share/doc/pas/SPEC.md"
 
