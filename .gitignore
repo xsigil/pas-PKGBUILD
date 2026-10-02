@@ -1,0 +1,20 @@
+# Arch Linux packaging artifacts
+src/
+pkg/
+*.pkg.tar
+*.pkg.tar.gz
+*.pkg.tar.xz
+*.pkg.tar.zst
+*.log
+*.log.*
+
+# Downloaded source archives and VCS checkouts
+*.tar.gz
+*.tar.xz
+*.tar.bz2
+*.tar.zst
+*.zip
+pas/
+
+# Namcap / build caches
+*.namcap
