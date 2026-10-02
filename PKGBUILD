@@ -1,5 +1,5 @@
 pkgname=pas-git
-pkgver=1.0.0.r0.g$(git rev-parse --short HEAD 2>/dev/null || echo "latest")
+pkgver=1.0.0.r4.gf27e10f
 pkgrel=1
 pkgdesc="Zero-metadata, anti-forensic secret store for Wayland & Linux (VCS master/main)"
 arch=('x86_64' 'aarch64')
@@ -16,13 +16,16 @@ source=("pas::git+$url.git")
 sha256sums=('SKIP')
 
 pkgver() {
-  cd pas
-  git describe --long --tags 2>/dev/null | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g' || \
-  printf "1.0.0.r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+  cd "$srcdir/pas"
+  if git describe --long --tags >/dev/null 2>&1; then
+    git describe --long --tags | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
+  else
+    printf "1.0.0.r%s.g%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+  fi
 }
 
 build() {
-  cd pas
+  cd "$srcdir/pas"
   export CGO_CPPFLAGS="${CPPFLAGS}"
   export CGO_CFLAGS="${CFLAGS}"
   export CGO_CXXFLAGS="${CXXFLAGS}"
@@ -33,7 +36,7 @@ build() {
 }
 
 package() {
-  cd pas
+  cd "$srcdir/pas"
   install -Dm755 build/pas "$pkgdir/usr/bin/pas"
   install -Dm755 scripts/migrate-legacy.sh "$pkgdir/usr/share/pas/scripts/migrate-legacy.sh"
   install -Dm644 README.md "$pkgdir/usr/share/doc/pas/README.md"
